@@ -4,6 +4,7 @@ from pygame.locals import *
 #Game Classes
 from hero import Hero
 from skill import SkillCreator
+from hero_class import ClassCreator
  
 class App:
     def __init__(self):
@@ -21,15 +22,26 @@ class App:
 
         skCreator = SkillCreator();
         self.gameSkills = skCreator.generateSkillList(self.hero.str, self.hero.dex, self.hero.mag)
-       
-        for s in self.gameSkills:
-            print(s.name);
-            print(s.type);
-            print(s.range);
-            print(s.description);
-            print(s.damage);
-            print(s.effects);
-            print("----------------");
+
+        #TODO: change this to let user select game classes
+        self.hero.setSkill(self.gameSkills[0], 0)
+        self.hero.setSkill(self.gameSkills[1], 1)
+        self.hero.setSkill(self.gameSkills[2], 2)
+
+        clCreator = ClassCreator()
+        self.hero.setClass(clCreator.getClass(self.hero.skills[0],
+            self.hero.skills[1],
+            self.hero.skills[2]))
+
+        #for s in self.gameSkills:
+        #for s in self.hero.skills:
+        #    print(s.name);
+        #    print(s.type);
+        #    print(s.range);
+        #    print(s.description);
+        #    print(s.damage);
+        #    print(s.effects);
+        #    print("----------------");
  
     def on_event(self, event):
         if event.type == pygame.QUIT:

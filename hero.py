@@ -37,5 +37,13 @@ class Hero:
         print("DODGE: ", self.dodge)
         print("CRIT: ", self.crit)
 
+        #skills
+        self.skills = []
+
+        self.hero_class = {} 
+
     def setSkill(self, skill, i):
-        this.skills[i] = skill;
+        self.skills.append(skill)
+
+    def setClass(self, hclass):
+        self.hero_class = hclass;
