@@ -1,5 +1,6 @@
 import math
 from random import randint
+from prettytable import PrettyTable
 
 from skill import Skill
 
@@ -27,20 +28,27 @@ class Hero:
         self.dodge = 10+math.ceil(1.7*self.dex)
         #Get Character CRIT, based on Magic
         self.crit = 10+math.ceil(1.75*self.mag)
-        print("STR: ", self.str)
-        print("DEX: ", self.dex)
-        print("MAG: ", self.mag)
-        print("HP: ", self.hp)
-        print("SPEED: ", self.speed)
-        print("HEAL: ", self.heal)
-        print("RESIST: ", self.res)
-        print("DODGE: ", self.dodge)
-        print("CRIT: ", self.crit)
+        table = PrettyTable()
+        table.field_names = ["Atributo", "Valor"]
+        table.add_row(["Força", self.str])
+        table.add_row(["Destreza", self.dex])
+        table.add_row(["Magia", self.mag])
+        table.add_row(["Pontos de Vida", self.hp])
+        table.add_row(["Velocidade", self.speed])
+        table.add_row(["Cura", self.heal])
+        table.add_row(["Resistência", self.res])
+        table.add_row(["Esquiva", self.dodge])
+        table.add_row(["Crítico", self.crit])
+
+        print("Seu novo personagem de nível 1:")
+        print(table)
 
         #skills
         self.skills = []
 
         self.hero_class = {} 
+
+        self.stun = False
 
     def setSkill(self, skill, i):
         self.skills.append(skill)

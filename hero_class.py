@@ -41,6 +41,7 @@ class ClassCreator:
         for cl in self.classList:
             for r in cl["reqSkills"]:
                 if ((sk1.id in r) and (sk2.id in r) and (sk3.id in r)):
+                    print("A Classe do seu heroi é "+cl["name"])
                     return HClass(cl["id"], cl["name"]) 
 
 class HClass:
