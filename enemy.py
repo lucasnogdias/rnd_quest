@@ -16,7 +16,7 @@ class Enemy:
         self.hp = 10
         self.speed = 2
         self.heal = 1
-        self.res = 1
+        self.res = 20
         self.dodge = 2
         self.crit = 10
         self.skills =[]
@@ -24,6 +24,7 @@ class Enemy:
         self.skills.append(gameSkills[1])
 
         self.stun = False
+        self.bonusSpeed = 0
 
     def getRndSkill(self):
         rndSkill = randint(0, len(self.skills)-1)

@@ -18,7 +18,7 @@ class SkillCreator:
             "type": "Força",
             "range": 0,
             "desc": "Ataque com escudo ou \n com o pomo da arma.",
-            "effects": {"stun": [0.7, 0.2, 0]},
+            "effects": {"stun": [0.5, 0.2, 0]},
             "effec_desc": 'Chance de atordoar o inimigo.',
             "reach": 0,
             "dmgByType": [0.7, 0, 0]
@@ -40,7 +40,7 @@ class SkillCreator:
             "type": "Destreza",
             "range": 0,
             "desc": "Estocada com uma arma perfurante.",
-            "effects": {"crit":0.2, "buff":1},
+            "effects": {"crit":0.2, "buff":2},
             "effec_desc": 'Aumenta sua velcidade pro proximo turno. \n Chance de crítico',
             "reach": 0,
             "dmgByType": [0.3, 0.7, 0]
@@ -63,7 +63,7 @@ class SkillCreator:
             "range": 0,
             "desc": "Uso de energia arcana para \n provocar um tremor violento.",
             "effec_desc": 'Chance de atordoar o inimigo e o jogador',
-            "effects": {"selfStun":True, "stun":[0, 0, 0.3]},
+            "effects": {"selfStun":True, "stun":[0, 0, 0.8]},
             "reach": 0,
             "dmgByType": [0, 0, 2]
         }

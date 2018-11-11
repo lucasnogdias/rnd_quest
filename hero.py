@@ -23,7 +23,7 @@ class Hero:
         #Get Character HEAL, based on Magic
         self.heal = 1+math.ceil(self.mag/3)
         #Get Character Resistence based on Strength
-        self.res = 10+math.ceil(1.7*self.str)
+        self.res = 10+math.ceil(2.7*self.str)
         #Get Character Dodge based on Dexterity
         self.dodge = 10+math.ceil(1.7*self.dex)
         #Get Character CRIT, based on Magic
@@ -49,6 +49,7 @@ class Hero:
         self.hero_class = {} 
 
         self.stun = False
+        self.bonusSpeed = 0
 
     def setSkill(self, skill, i):
         self.skills.append(skill)

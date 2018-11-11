@@ -3,7 +3,7 @@ class ClassCreator:
         {
             "id": 0,
             "name": "Guerreiro",
-            "reqSkills": [[0, 1, 2], [0, 1, 3]]
+            "reqSkills": [[0, 1, 2], [0, 1, 3], [0,2,3]]
         },
         {
             "id": 1,

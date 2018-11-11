@@ -32,6 +32,7 @@ class App:
         self._running = True
 
         self.combat = Combat()
+        os.system('clear') 
  
     def on_event(self, event):
         if event.type == pygame.QUIT:
