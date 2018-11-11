@@ -40,7 +40,11 @@ class App:
     def on_loop(self):
     
         while (self.hero!= None):
-            if (self.enemy == None):
+            if (self.hero.hp<=0):
+                print("Seu Heroi morreu!")
+                self.hero = None;
+                continue;
+            if (self.enemy == None or self.enemy.hp<=0):
                 print("Surgiu um novo inimigo!");
                 self.enemy = Enemy(0, self.gameSkills)
             else:
