@@ -1,6 +1,7 @@
 from random import randint
 
 import math
+import json
 
 from enemy import Enemy
 
@@ -53,9 +54,6 @@ class Combat:
             stunProc = user.str*skill.effects['stun'][0]*10
             stunProc += user.dex*skill.effects['stun'][1]*10
             stunProc += user.mag*skill.effects['stun'][2]*10
-            print("stunproc")
-            print(stunProc)
-            print(sRoll)
             if (sRoll<=stunProc):
                 stun = True
             if (rRoll<=target.res):
@@ -65,7 +63,7 @@ class Combat:
                 if (type(target) is Enemy):
                     print("Seu ataque atordoou o inimigo!")
                 else:
-                    print("O ataque inimito te atordoou!")
+                    print("O ataque inimigo te atordoou!")
         if ("selfStun" in skill.effects):
             stun = False
             resist = False
@@ -92,7 +90,6 @@ class Combat:
             if (hero.hp > 0):
                 self.heroTurn(hero, enemy, activeSkill)
             else:
-                #TODO:computar pontos de xp
                 print("Seu Heroi morreu!")
                 ref.hero = None
 
@@ -100,25 +97,50 @@ class Combat:
                 self.enemyTurn(hero, enemy)
             else:
                 print("Você Eliminou o Inimigo!")
+                self.heal(hero)
+                self.xpIncrease(enemy)
                 ref.enemy = None
         else:
             if (enemy.hp > 0):
                 self.enemyTurn(hero, enemy)
             else:
                 print("Você Eliminou o Inimigo!")
+                self.heal(hero)
+                self.xpIncrease(enemy)
                 ref.enemy = None
 
             if (hero.hp > 0):
                 self.heroTurn(hero, enemy, activeSkill)
             else:
-                #TODO: computar pontos de xp
                 print("Seu Heroi morreu!")
                 ref.hero = None
+
+    def heal(self, hero):
+        hero.hp = hero.hp+hero.heal
+        if (hero.hp>hero.maxHP):
+            hero.hp = hero.maxHP
+        print("Seu herói recuperou "+str(hero.heal)+" pontos de vida após a batalha.")
+
+    def xpIncrease(self, enemy):
+        lvlFile = json.loads(open('./saveFile.json').read())
+        lvl = int(lvlFile["level"])
+        xp = int(lvlFile["xp"])
+        xp = xp+10*enemy.level
+        while (xp>=1000):
+            print("Você subiu de nível!")
+            lvl = lvl+1
+            xp = xp-1000
+        if xp<0:
+            xp=0
+
+        lvlData = {'level':lvl, 'xp':xp}
+        with open('./saveFile.json', 'w') as outfile:  
+            json.dump(lvlData, outfile)
 
     def heroTurn(self, hero, enemy, activeSkill):
         if(hero.stun):
             print("Você está atordoado e não pode agir neste turno!")
-            hero.stun = false
+            hero.stun = False
         else:
             if (self.calcAttack(enemy, activeSkill)):
                 print("Seu ataque "+activeSkill.name+" atingiu o inimigo!")
@@ -130,7 +152,7 @@ class Combat:
     def enemyTurn(self, hero, enemy):
         if (enemy.stun):
             print("O inimigo está atordoado e não pode agir neste turno!")
-            enemy.stun = false;
+            enemy.stun = False;
         else:
             enSkill = enemy.getRndSkill()
             if(self.calcAttack(hero, enSkill)):

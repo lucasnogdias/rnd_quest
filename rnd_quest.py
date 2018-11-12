@@ -20,6 +20,7 @@ class App:
         self.hero = None;
         self.gameSkills = [];
         self.enemy = None;
+        self.enemyLvl = 0;
         self.ready = False;
         self.onUserAction = False;
 
@@ -45,8 +46,10 @@ class App:
                 self.hero = None;
                 continue;
             if (self.enemy == None or self.enemy.hp<=0):
-                print("Surgiu um novo inimigo!");
-                self.enemy = Enemy(0, self.gameSkills)
+                self.enemyLvl += 1
+                self.enemy = Enemy(self.enemyLvl)
+                print("Surgiu um novo inimigo!")
+                print("Prepare-se para enfentar um "+self.enemy.name+" lvl: "+str(self.enemy.level))
             else:
                 print("Informe qual habilidade você deseja utilizar")
                 print("1 - "+self.hero.skills[0].name)
