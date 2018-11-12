@@ -80,9 +80,9 @@ class Combat:
                 user.stun = True
 
     def combatTurn(self, hero, enemy, activeSkill, ref):
-        turnHeader = ('\033[92m'+hero.hero_class.name+" lvl:1 "+ "HP: "+str(hero.hp))
+        turnHeader = ('\033[92m'+hero.hero_class.name+" lvl:"+str(hero.level)+" "+ "HP: "+str(hero.hp))
         turnHeader = (turnHeader+'\033[93m'+(" -----VS----- "))
-        turnHeader = (turnHeader+'\033[91m'+("Inimigo lvl:1 HP: "+str(enemy.hp)))
+        turnHeader = (turnHeader+'\033[91m'+(enemy.name+" lvl:"+str(enemy.level)+" HP: "+str(enemy.hp)))
         print(turnHeader)
         print('\033[37m')
         init = self.calcInit(hero, enemy)

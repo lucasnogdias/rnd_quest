@@ -9,6 +9,7 @@ class Hero:
     def __init__(self):
         lvlData = json.loads(open('./saveFile.json').read())
         charPoints = 15+int(lvlData['level'])
+        self.level = lvlData['level'])
         #Generate Hero Strength
         self.str = randint(1, charPoints)
         charPoints = charPoints - self.str
