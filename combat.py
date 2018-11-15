@@ -8,10 +8,14 @@ from enemy import Enemy
 class Combat:
     def calcInit(self, hero, enemy):
         h_init = hero.speed + hero.bonusSpeed
+        if ("buff" in hero.hability):
+            h_init += hero.hability["buff"]
         h_init += randint(1, 20)
         hero.bonusSpeed = 0
         
         e_init = enemy.speed + enemy.bonusSpeed
+        if ("buff" in enemy.hability):
+            e_init += enemy.hability["buff"]
         e_init += randint(1, 20)
         enemy.bonusSpeed = 0
 
@@ -25,16 +29,20 @@ class Combat:
             return True
         else:
             dodge = target.dodge
+            if ("dodgy" in target.hability):
+                dodge += target.hability["dodgy"]
             roll = randint(0, 100)
             if (roll<=dodge):
                 return False
             else:
                 return True
 
-    def calcDamage(self, skill):
+    def calcDamage(self, skill, user):
         critChance = 10
         if ("crit" in skill.effects):
-            critChance = skill.effects['crit']*100
+            critChance = skill.effects["crit"]*100
+        if ("bCrit" in user.hability):
+            critChance+= user.hability["bCrit"]
         dmg = math.ceil(skill.damage)
         dmg = dmg+randint(1, 4)
         critRoll = randint(0, 100)
@@ -51,9 +59,9 @@ class Combat:
             resist = False
             sRoll = randint(0, 100)
             rRoll = randint(0, 100)
-            stunProc = user.str*skill.effects['stun'][0]*10
-            stunProc += user.dex*skill.effects['stun'][1]*10
-            stunProc += user.mag*skill.effects['stun'][2]*10
+            stunProc = user.str*skill.effects["stun"][0]*10
+            stunProc += user.dex*skill.effects["stun"][1]*10
+            stunProc += user.mag*skill.effects["stun"][2]*10
             if (sRoll<=stunProc):
                 stun = True
             if (rRoll<=target.res):
@@ -69,9 +77,9 @@ class Combat:
             resist = False
             sRoll = randint(0, 100)
             rRoll = randint(0, 100)
-            stunProc = user.str*skill.effects['stun'][0]*10
-            stunProc += user.dex*skill.effects['stun'][1]*10
-            stunProc += user.mag*skill.effects['stun'][2]*10
+            stunProc = user.str*skill.effects["stun"][0]*10
+            stunProc += user.dex*skill.effects["stun"][1]*10
+            stunProc += user.mag*skill.effects["stun"][2]*10
             if (sRoll<=stunProc):
                 stun = True
             if (rRoll<=user.res):
@@ -95,6 +103,10 @@ class Combat:
 
             if (enemy.hp > 0):
                 self.enemyTurn(hero, enemy)
+                if (hero.hp<0):
+                    print("Seu Heroi morreu!")
+                    ref.hero = None
+
             else:
                 print("Você Eliminou o Inimigo!")
                 self.heal(hero)
@@ -111,6 +123,11 @@ class Combat:
 
             if (hero.hp > 0):
                 self.heroTurn(hero, enemy, activeSkill)
+                if (enemy.hp < 0):
+                    self.heal(hero)
+                    self.xpIncrease(enemy)
+                    ref.enemy = None
+
             else:
                 print("Seu Heroi morreu!")
                 ref.hero = None
@@ -133,7 +150,7 @@ class Combat:
         if xp<0:
             xp=0
 
-        lvlData = {'level':lvl, 'xp':xp}
+        lvlData = {"level":lvl, "xp":xp}
         with open('./saveFile.json', 'w') as outfile:  
             json.dump(lvlData, outfile)
 
@@ -144,19 +161,69 @@ class Combat:
         else:
             if (self.calcAttack(enemy, activeSkill)):
                 print("Seu ataque "+activeSkill.name+" atingiu o inimigo!")
-                dmg = self.calcDamage(activeSkill)
+                dmg = self.calcDamage(activeSkill, hero)
+
+                #apply any dmg bonus the hero has
+                if (("bSDmg" in hero.hability) and activeSkill.type == "Força"):
+                    dmg = dmg*hero.hability["bSDmg"]
+                if (("bDDmg" in hero.hability) and activeSkill.type == "Destreza"):
+                    dmg = dmg*her.hability["bDDmg"]
+                if (("bMDmg" in hero.hability) and activeSkill.type == "Magia"):
+                    dmg = dmg*hero.hability["bMDmg"]
+
+                #apply any dmg reduction the enemy has
+                if (("dmgRedS" in enemy.hability) and activeSkill.type == "Força"):
+                    dmg = dmg*enemy.hability["dmgRedS"]
+                if (("dmgRedD" in enemy.hability) and activeSkill.type == "Destreza"):
+                    dmg = dmg*enemy.hability["dmgRedD"]
+                if (("dmgRedM" in enemy.hability) and activeSkill.type == "Magia"):
+                    dmg = dmg*enemy.hability["dmgRedM"]
+
+                dmg = math.ceil(dmg)
+
                 self.applyEffects(hero, enemy, activeSkill)
                 print("Você causou "+str(dmg)+" pontos de dano!")
                 enemy.hp -= dmg
+                if ("regen" in hero.hability):
+                    re = hero.hability["regen"]
+                    hero.hp += re
+                    if (hero.hp > hero.maxHP):
+                        hero.hp = hero.maxHP
+                    print("Você regenerou "+str(re)+" pontos de vida")
 
     def enemyTurn(self, hero, enemy):
         if (enemy.stun):
             print("O inimigo está atordoado e não pode agir neste turno!")
-            enemy.stun = False;
+            enemy.stun = False
         else:
             enSkill = enemy.getRndSkill()
             if(self.calcAttack(hero, enSkill)):
-                print("O oponente te atingiu com um(a) "+enSkill.name);
-                dmg = self.calcDamage(enSkill)
+                print("O oponente te atingiu com um(a) "+enSkill.name)
+                dmg = self.calcDamage(enSkill, enemy)
+
+                #apply any dmg bonus the enemy has
+                if (("bSDmg" in enemy.hability) and enSkill.type == "Força"):
+                    dmg = dmg*enemy.hability["bSDmg"]
+                if (("bDDmg" in enemy.hability) and enSkill.type == "Destreza"):
+                    dmg = dmg*enemy.hability["bDDmg"]
+                if (("bMDmg" in enemy.hability) and enSkill.type == "Magia"):
+                    dmg = dmg*enemy.hability["bMDmg"]
+
+                #apply any dmg reduction the hero has
+                if (("dmgRedS" in hero.hability) and enSkill.type == "Força"):
+                    dmg = dmg*hero.hability["dmgRedS"]
+                if (("dmgRedD" in hero.hability) and enSkill.type == "Destreza"):
+                    dmg = dmg*hero.hability["dmgRedD"]
+                if (("dmgRedM" in hero.hability) and enSkill.type == "Magia"):
+                    dmg = dmg*hero.hability["dmgRedM"]
+
+                self.applyEffects(enemy, hero, enSkill)
+                dmg = math.ceil(dmg)
                 hero.hp -= dmg
                 print("Você sofreu "+str(dmg)+" pontos de dano!")
+                if ("regen" in enemy.hability):
+                    re = enemy.hability["regen"]
+                    enemy.hp += re
+                    if (enemy.hp > enemy.maxHP):
+                        enemy.hp = enemy.maxHP
+                    print("O inimigo regenerou "+str(re)+" pontos de vida")

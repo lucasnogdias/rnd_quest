@@ -57,6 +57,7 @@ class Hero:
         self.skills = []
 
         self.hero_class = {} 
+        self.hability = {}
 
         self.stun = False
         self.bonusSpeed = 0
@@ -66,3 +67,4 @@ class Hero:
 
     def setClass(self, hclass):
         self.hero_class = hclass;
+        self.hability = hclass.hability;

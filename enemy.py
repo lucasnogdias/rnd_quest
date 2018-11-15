@@ -41,18 +41,18 @@ class Enemy:
                 "base": [0, 2, 6],
                 "hability":{"bMDmg":1.15},
                 "reach":0,
-                "skills": [5, 6, 2]
+                "skills": [4, 5, 2]
             },
             {
                 "name": "Imp",
-                "base": {2, 4, 4},
+                "base": [2, 4, 4],
                 "hability": {"buff":8, "bMDmg":1.08},
                 "reach": 1,
-                "skills": [5, 6, 2],
+                "skills": [4, 5, 3],
             },
             {
                 "name": "Drow",
-                "base": {3, 7, 2},
+                "base": [3, 7, 2],
                 "hability": {"dodgy":12},
                 "reach": 0,
                 "skills": [2, 3, 1, 4],
@@ -61,7 +61,7 @@ class Enemy:
         [
             {
                 "name": "Troll",
-                "base": {10, 4, 4},
+                "base": [10, 4, 4],
                 "hability": {"regen":4, "buff":-2},
                 "reach": 0,
                 "skills": [0, 1, 5],
@@ -70,7 +70,7 @@ class Enemy:
         [
             {
                 "name": "Dragão",
-                "base": {15, 12, 16},
+                "base": [15, 12, 16],
                 "hability": {"regen": 3, "bMDmg":1.7, "bSDmg": 1.8, "bDDmg": 1.5, "dmgRedS":0.8, "dmgRedD":0.7, "dmgRedM":0.92},
                 "reach":1,
                 "skills": [0, 1, 2, 3, 4, 5]
@@ -119,6 +119,7 @@ class Enemy:
         self.dodge = 10+math.ceil(1.7*self.dex)
         self.crit = 10+math.ceil(1.75*self.mag)
         self.reach = enemyBase['reach']
+        self.hability = enemyBase['hability']
 
         self.skills =[]
 
