@@ -29,7 +29,7 @@ class SkillCreator:
             "type": "Destreza",
             "range": 1,
             "desc": "Disparo de flecha ou virote",
-            "effects": {"crit":0.3},
+            "effects": {"crit":0.35},
             "effec_desc": 'Chance elevada de causar dano crítico.',
             "reach": 1,
             "dmgByType": [0.1, 0.7, 0]
@@ -40,10 +40,10 @@ class SkillCreator:
             "type": "Destreza",
             "range": 0,
             "desc": "Estocada com uma arma perfurante.",
-            "effects": {"crit":0.2, "buff":2},
+            "effects": {"crit":0.18, "buff":2},
             "effec_desc": 'Aumenta sua velcidade pro proximo turno. \n Chance de crítico',
             "reach": 0,
-            "dmgByType": [0.3, 0.7, 0]
+            "dmgByType": [0.3, 0.6, 0]
         },
         {
             "id": 4,

@@ -21,7 +21,7 @@ class ClassCreator:
         {
             "id": 3,
             "name": "Mago de Guerra",
-            "hability": {"buff":-2, "dmgRedS":0.95, "bMDmg":1.2},
+            "hability": {"buff":-2, "dmgRedS":0.95, "bMDmg":1.17},
             "reqSkills": [[1, 2, 5], [0, 3, 4], [0, 4, 5]]
         },
         {
